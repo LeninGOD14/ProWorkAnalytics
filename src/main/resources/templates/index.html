@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>ProWorkAnalytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+                color: #020617;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 45px 60px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+                text-align: left;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 50px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            }
+
+            .container {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 30px 40px;
+            }
+
+            .wrapper {
+                max-width: 1100px;
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1.2fr 1fr;
+                gap: 50px;
+                align-items: center;
+            }
+
+            .main-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .main-text h2 {
+                margin: 0 0 16px;
+                font-size: 28px;
+                font-weight: 600;
+            }
+
+            .main-text p {
+                margin: 0 0 28px;
+                font-size: 15px;
+                color: #4b5563;
+                line-height: 1.7;
+            }
+
+            .buttons {
+                display: flex;
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+                color: white;
+                padding: 13px 34px;
+                border-radius: 9px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background 0.2s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-secondary {
+                background-color: #e5e7eb;
+                color: #020617;
+                padding: 13px 34px;
+                border-radius: 9px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background 0.2s ease;
+            }
+
+            .btn-secondary:hover {
+                background-color: #d1d5db;
+            }
+
+            .features {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .feature {
+                background: white;
+                border-left: 5px solid #2563eb;
+                padding: 16px 20px;
+                border-radius: 8px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+                transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            }
+
+            .feature:hover {
+                transform: translateY(-6px); 
+                box-shadow: 0 12px 20px rgba(0,0,0,0.15); 
+            }
+
+            .feature h3 {
+                margin: 0 0 6px;
+                font-size: 16px;
+                color: #1e3a8a;
+                font-weight: 600;
+            }
+
+            .feature p {
+                margin: 0;
+                font-size: 14px;
+                color: #4b5563;
+                line-height: 1.6;
+            }
+
+            footer {
+                text-align: center;
+                padding: 18px;
+                font-size: 12px;
+                color: #9ca3af;
+                background-color: #f3f4f6;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>ProWorkAnalytics</h1>
+        </header>
+
+        <div class="container">
+            <div class="wrapper">
+
+                <div class="main-text">
+                    <h2>Análisis y control de productividad industrial</h2>
+                    <p>
+                        Supervisa operaciones, controla el desempeño de operarios y líneas de producción,
+                        y toma decisiones estratégicas basadas en información clara y accionable.
+                    </p>
+
+                    <div class="buttons">
+                        <a th:href="@{/login}" class="btn-primary">Iniciar sesión</a>
+                        <a th:href="@{/conocer}" class="btn-secondary">Conocer el sistema</a>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div class="feature">
+                        <h3>Dashboard industrial</h3>
+                        <p>KPIs clave, eficiencia, tiempos efectivos y rendimiento operativo.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Gestión operativa</h3>
+                        <p>Administración centralizada de operarios, tareas y líneas.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Reportes inteligentes</h3>
+                        <p>Análisis histórico, comparaciones y tendencias productivas.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 · Plataforma de análisis industrial
+        </footer>
+
+    </body>
+</html>

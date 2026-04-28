@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Reporte de Asistencias | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .supervisor-badge {
+                background-color: #2563eb;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                padding: 40px;
+                max-width: 1100px;
+                margin: auto;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            h2 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            .filter-box {
+                margin-bottom: 25px;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            select {
+                padding: 8px;
+                border-radius: 6px;
+                border: 1px solid #d1d5db;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
+                color: white;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-secondary {
+                background-color: #6b7280;
+            }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+            .btn-danger {
+                background-color: #dc2626;
+            }
+
+            .btn-danger:hover {
+                background-color: #b91c1c;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            th, td {
+                padding: 12px;
+                border: 1px solid #e5e7eb;
+                text-align: center;
+            }
+
+            th {
+                background-color: #1e293b;
+                color: white;
+                font-weight: 600;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9fafb;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 30px;
+                margin-bottom: 20px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="supervisor-badge">SUPERVISOR</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo: <strong>SUPERVISOR</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="card">
+
+                <h2>Reporte de Asistencias</h2>
+
+                <form method="get" th:action="@{/supervisor/asistencias}" class="filter-box">
+                    <label><strong>Filtrar por Operario:</strong></label>
+
+                    <select name="operarioId">
+                        <option value="">Todos</option>
+                        <option th:each="op : ${operarios}"
+                                th:value="${op.id}"
+                                th:text="${op.username}"
+                                th:selected="${operarioSeleccionado == op.id}">
+                        </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </form>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Operario</th>
+                            <th>Fecha</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Horas Trabajadas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="a : ${asistencias}">
+                            <td th:text="${a.operario.username}"></td>
+
+                            <td th:text="${a.horaEntrada != null ?
+                                #temporals.format(a.horaEntrada,'yyyy-MM-dd') : '-'}"></td>
+
+                            <td th:text="${a.horaEntrada != null ?
+                                #temporals.format(a.horaEntrada,'HH:mm:ss') : '-'}"></td>
+
+                            <td th:text="${a.horaSalida != null ?
+                                #temporals.format(a.horaSalida,'HH:mm:ss') : '-'}"></td>
+
+                            <td th:text="${a.horaEntrada != null && a.horaSalida != null ?
+                                #numbers.formatDecimal(T(java.time.Duration).between(a.horaEntrada, a.horaSalida).toMinutes() / 60.0, 1, 2) + ' h' : '0 h'}">
+                            </td>
+
+                            <td>
+                                <a th:href="@{/supervisor/asistencias/eliminar/{id}(id=${a.id})}"
+                                   class="btn btn-danger"
+                                   onclick="return confirm('¿Seguro que deseas eliminar esta asistencia?');">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 15px;">
+                    <a th:href="@{/supervisor}" class="btn btn-secondary">
+                        Regresar
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 | Módulo Supervisor
+        </footer>
+
+    </body>
+</html>

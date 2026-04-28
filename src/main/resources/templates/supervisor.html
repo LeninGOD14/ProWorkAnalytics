@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Panel Supervisor | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .supervisor-badge {
+                background-color: #2563eb;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                padding: 40px;
+            }
+
+            .title {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                color: #6b7280;
+                margin-bottom: 30px;
+            }
+
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 10px;
+                padding: 25px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+                min-height: 155px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card h3 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #4b5563;
+            }
+
+            .actions {
+                display: flex;
+                gap: 12px;
+                margin-top: auto;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+                padding: 10px 0;
+                border-radius: 6px;
+                font-size: 14px;
+                text-decoration: none;
+                color: white;
+                font-weight: 500;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-secondary {
+                background-color: #6b7280;
+            }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: -22px;
+                margin-bottom: 20px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="supervisor-badge">SUPERVISOR</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo: <strong>SUPERVISOR</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="title">Panel de Control Supervisor</div>
+            <div class="subtitle">Consulta y gestión de líneas, tareas y dashboard industrial.</div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>Información de Operarios</h3>
+                    <p>Consulta y administra información detallada de los operarios.</p>
+                    <div class="actions">
+                        <a th:href="@{/supervisor/operarios/info/nuevo}" class="btn btn-primary">Administrar</a>
+
+                        <a th:href="@{/supervisor/operarios/info}" class="btn btn-secondary">Ver información</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Líneas de Producción</h3>
+                    <p>Configurar áreas y líneas productivas.</p>
+                    <div class="actions">
+                        <a th:href="@{/supervisor/lineas-supervisor/nuevo}" class="btn btn-primary">Gestionar</a>
+
+                        <a th:href="@{/supervisor/lineas-supervisor}" class="btn btn-secondary">Ver líneas</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Catálogo de Tareas</h3>
+                    <p>Crear y administrar el catálogo de tareas operativas.</p>
+                    <div class="actions">
+                        <a th:href="@{/supervisor/catalogo-tareas/nuevo}" class="btn btn-primary">
+                            Nueva tarea
+                        </a>
+                        <a th:href="@{/supervisor/catalogo-tareas}" class="btn btn-secondary">
+                            Ver catálogo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Asignar Tareas</h3>
+                    <p>Asignar actividades y tareas a los operarios.</p>
+                    <div class="actions">
+                        <a th:href="@{/supervisor/tareas/nuevo}" class="btn btn-primary">Administrar</a>
+                        <a th:href="@{/supervisor/tareas}" class="btn btn-secondary">Ver tareas asignadas</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Reporte de Asistencias</h3>
+                    <p>Consulta entradas y salidas registradas por los operarios.</p>
+                    <div class="actions">
+                        <a th:href="@{/supervisor/asistencias}" class="btn btn-primary">
+                            Ver reporte
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Dashboard Industrial</h3>
+                    <p>KPIs, eficiencia y análisis de rendimiento.</p>
+                    <div class="actions">
+                        <a th:href="@{/industrial/dashboard}" class="btn btn-primary">Dashboard</a>
+                        <a th:href="@{/industrial/reportes}" class="btn btn-secondary">Reportes</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 | Módulo Supervisor
+        </footer>
+    </body>
+</html>

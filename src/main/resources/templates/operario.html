@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Panel Operario | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .role-badge {
+                background-color: #16a34a; 
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                padding: 40px;
+            }
+
+            .title {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                color: #6b7280;
+                margin-bottom: 30px;
+            }
+
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 10px;
+                padding: 25px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            .card h3 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            .card p {
+                font-size: 14px;
+                color: #4b5563;
+            }
+
+            .actions {
+                margin-top: 18px;
+                display: flex;
+                gap: 12px;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+                padding: 10px 0;
+                border-radius: 6px;
+                font-size: 14px;
+                text-decoration: none;
+                color: white;
+                font-weight: 500;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-secondary {
+                background-color: #6b7280;
+            }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 50px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="role-badge">OPERARIO</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo: <strong>OPERARIO</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+
+            <div class="title">Panel de Control Operario</div>
+            <div class="subtitle">
+                Gestión de actividades y registro de asistencia
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>Asistencia</h3>
+                    <p>Registrar tu entrada y salida diaria.</p>
+                    <div class="actions">
+                        <a th:href="@{/operario/asistencia/registrar}" class="btn btn-primary">
+                            Registrar asistencia
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Tareas</h3>
+                    <p>Revisar las tareas asignadas por el supervisor.</p>
+                    <div class="actions">
+                        <a th:href="@{/operario/tareas}" class="btn btn-primary">
+                            Ver tareas
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 | Módulo Operario
+        </footer>
+
+    </body>
+</html>

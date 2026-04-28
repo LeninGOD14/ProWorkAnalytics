@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Conocer el sistema | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+                color: #111827;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .container {
+                padding: 50px 18%;
+            }
+
+            .title {
+                font-size: 28px;
+                margin-bottom: 10px;
+                color: #0f172a;
+            }
+
+            .subtitle {
+                color: #475569;
+                margin-bottom: 35px;
+                font-size: 15px;
+            }
+
+            .section {
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+                margin-bottom: 30px;
+            }
+
+            .section h3 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            .section p, .section ul {
+                font-size: 15px;
+                color: #374151;
+                line-height: 1.7;
+            }
+
+            ul {
+                padding-left: 18px;
+            }
+
+            .authors {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+                margin-top: 15px;
+            }
+
+            .author-card {
+                background: #f1f5f9;
+                padding: 18px;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            .author-card strong {
+                display: block;
+                color: #0f172a;
+                font-size: 16px;
+            }
+
+            .btn-back {
+                display: inline-block;
+                margin-top: 30px;
+                background-color: #2563eb;
+                color: white;
+                padding: 10px 18px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .btn-back:hover {
+                background-color: #1d4ed8;
+            }
+
+            footer {
+                text-align: center;
+                margin: 50px 0 20px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>ProWork Analytics</h1>
+        </header>
+
+        <div class="container">
+
+            <div class="title">Conocer el sistema</div>
+            <div class="subtitle">
+                Proyecto académico – Sistema web de análisis de productividad laboral
+            </div>
+
+            <div class="section">
+                <h3>¿Por qué nace ProWork Analytics?</h3>
+                <p>
+                    ProWork Analytics nace como un proyecto académico orientado a dar solución a una problemática
+                    frecuente en entornos productivos: la falta de control estructurado sobre la asistencia,
+                    las tareas y la productividad laboral.
+                </p>
+                <p>
+                    Especialmente en la industria textil, muchos procesos se gestionan de forma manual o con
+                    herramientas dispersas, dificultando el análisis real del rendimiento y la toma de decisiones.
+                    Este sistema busca centralizar la información y convertir los datos en indicadores claros.
+                </p>
+            </div>
+
+            <div class="section">
+                <h3>Propósito del sistema</h3>
+                <ul>
+                    <li>Gestión de operarios, líneas y tareas</li>
+                    <li>Control de asistencia por turnos</li>
+                    <li>Registro de tiempos reales de ejecución</li>
+                    <li>Análisis mediante KPIs industriales</li>
+                    <li>Reportes históricos y visualización gráfica</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Alcance</h3>
+                <p>
+                    ProWork Analytics está diseñado para la industria manufacturera ligera,
+                    con especial enfoque en la industria textil. Integra módulos administrativos,
+                    operativos y analíticos bajo una arquitectura escalable.
+                </p>
+            </div>
+
+            <div class="section">
+                <h3>Base tecnológica</h3>
+                <ul>
+                    <li>Java + Spring Boot</li>
+                    <li>HTML, CSS, JavaScript, Thymeleaf</li>
+                    <li>Chart.js para visualización de datos</li>
+                    <li>PostgreSQL</li>
+                    <li>Arquitectura MVC</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Creadores y soporte</h3>
+
+                <div class="authors">
+                    <div class="author-card">
+                        <strong>Lenin Cabezas</strong>
+                        Desarrollo y arquitectura
+                    </div>
+
+                    <div class="author-card">
+                        <strong>Bryan Flores</strong>
+                        Análisis, diseño y soporte
+                    </div>
+                </div>
+            </div>
+
+            <a th:href="@{/}" class="btn-back">Regresar</a>
+
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 · Plataforma de análisis industrial
+        </footer>
+
+
+    </body>
+</html>

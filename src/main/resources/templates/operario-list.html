@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Operarios | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .admin-badge {
+                background-color: #dc2626;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                padding: 40px;
+                max-width: 800px;
+                margin: auto;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            h2 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            /* --- ESTILOS PARA LAS ALERTAS (NUEVO) --- */
+            .alert {
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+            .alert-error {
+                background-color: #fee2e2;
+                color: #991b1b;
+                border: 1px solid #f87171;
+            }
+            .alert-success {
+                background-color: #dcfce7;
+                color: #166534;
+                border: 1px solid #4ade80;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            table, th, td {
+                border: 1px solid #d1d5db;
+            }
+
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #1e293b;
+                color: white;
+                font-weight: 600;
+            }
+
+            a.btn {
+                text-decoration: none;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                color: white;
+                margin-right: 5px;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-danger {
+                background-color: #dc2626;
+            }
+
+            .btn-danger:hover {
+                background-color: #b91c1c;
+            }
+
+            .btn-secondary {
+                background-color: #6b7280;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 50px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="admin-badge">ADMIN</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo: <strong>ADMIN</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="card">
+                <h2>Lista de Operarios</h2>
+
+                <div th:if="${mensajeError}" class="alert alert-error">
+                    <strong>Error:</strong> <span th:text="${mensajeError}"></span>
+                </div>
+
+                <div th:if="${mensajeExito}" class="alert alert-success">
+                    <span th:text="${mensajeExito}"></span>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="op : ${operarios}">
+                            <td th:text="${op.id}"></td>
+                            <td th:text="${op.username}"></td>
+                            <td>
+                                <a th:href="@{/admin/operarios/editar/{id}(id=${op.id})}" class="btn btn-primary">
+                                    Editar
+                                </a>
+                                <a th:href="@{/admin/operarios/eliminar/{id}(id=${op.id})}" 
+                                   onclick="return confirm('¿Seguro que deseas eliminar este operario?')" 
+                                   class="btn btn-danger">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(operarios)}">
+                            <td colspan="3" style="text-align:left;">No hay operarios creados todavía</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="top-actions" style="margin-top: 20px;">
+                    <a th:href="@{/admin}" class="btn-secondary">Regresar</a>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 | Módulo Administrador
+        </footer>
+
+    </body>
+</html>

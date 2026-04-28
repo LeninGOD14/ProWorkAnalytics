@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Iniciar Sesión | ProWorkAnalytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 30px 40px;
+                display: flex;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 36px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+            }
+
+            .login-wrapper {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .login-card {
+                background-color: white;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+                width: 360px;
+                text-align: center;
+            }
+
+            .login-card h2 {
+                margin-top: 0;
+                margin-bottom: 10px;
+                color: #1e3a8a;
+            }
+
+            .login-card p {
+                color: #6b7280;
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .login-card input {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 14px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+
+            .login-card button {
+                width: 100%;
+                padding: 12px;
+                background-color: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 15px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .login-card button:hover {
+                background-color: #1d4ed8;
+            }
+
+            .login-card .info {
+                margin-top: 18px;
+                font-size: 13px;
+                color: #6b7280;
+            }
+
+            footer {
+                text-align: center;
+                padding: 15px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>ProWorkAnalytics</h1>
+        </header>
+
+        <div class="login-wrapper">
+            <div class="login-card">
+                <h2>Iniciar sesión</h2>
+
+                <p th:if="${param.error}" style="color:#dc2626; font-size:14px; margin-bottom:15px;">
+                    ❌ Usuario o contraseña incorrectos
+                </p>
+
+                <p th:if="${param.logout}" style="color:#16a34a; font-size:14px; margin-bottom:15px;">
+                    ✅ Sesión cerrada correctamente
+                </p>
+
+                <p>Sistema de análisis de productividad industrial</p>
+
+                <form th:action="@{/login}" method="post">
+                    <input type="text" name="username" placeholder="Usuario" required>
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <button type="submit">Entrar al sistema</button>
+                </form>
+
+                <div class="info">
+                    ¿No tienes acceso? Contacta al administrador del sistema.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 · Plataforma de análisis industrial
+        </footer>
+
+
+    </body>
+</html>

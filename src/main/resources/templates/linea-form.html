@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Línea de Producción | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .admin-badge {
+                background-color: #dc2626;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                padding: 40px;
+                max-width: 600px;
+                margin: auto;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            h2 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            label {
+                font-weight: 500;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 8px;
+                margin-top: 4px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+            }
+
+            .actions {
+                margin-top: 25px;
+                display: flex;
+                gap: 12px;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+                padding: 10px 0;
+                border-radius: 6px;
+                font-size: 14px;
+                text-decoration: none;
+                color: white;
+                font-weight: 500;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background-color: #2563eb;
+            }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-secondary {
+                background-color: #6b7280;
+            }
+
+            .btn-secondary:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 50px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="admin-badge" sec:authorize="hasRole('ADMIN')">ADMIN</span>
+                <span class="admin-badge" sec:authorize="hasRole('SUPERVISOR')"
+                      style="background:#2563eb;">SUPERVISOR</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo:
+                <strong sec:authorize="hasRole('ADMIN')">ADMIN</strong>
+                <strong sec:authorize="hasRole('SUPERVISOR')">SUPERVISOR</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="card">
+                <h2 th:text="${linea.id == null ? 'Nueva Línea' : 'Editar Línea'}"></h2>
+
+                <form th:action="@{/admin/lineas/guardar}" th:object="${linea}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <label>Código:</label>
+                    <input type="text" th:field="*{codigo}" required><br><br>
+
+                    <label>Nombre:</label>
+                    <input type="text" th:field="*{nombre}" required>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">
+                            Guardar
+                        </button>
+
+                        <a th:href="@{${#authorization.expression('hasRole(''ADMIN'')') ? '/admin' : '/supervisor'}}"
+                           class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <span sec:authorize="hasRole('ADMIN')">
+                ProWork Analytics © 2026 | Módulo Administrador
+            </span>
+
+            <span sec:authorize="hasRole('SUPERVISOR')">
+                ProWork Analytics © 2026 | Módulo Supervisor
+            </span>
+        </footer>
+
+    </body>
+</html>

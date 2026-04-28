@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Operarios | ProWork Analytics</title>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .supervisor-badge {
+                background-color: #2563eb;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .container {
+                max-width: 1300px;
+                margin: 40px auto;
+                padding: 30px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            h2 {
+                color: #1e3a8a;
+                margin-top: 0;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            }
+
+            th, td {
+                padding: 12px;
+                border-bottom: 1px solid #d1d5db;
+                text-align: left;
+                font-size: 14px;
+            }
+
+            th {
+                background-color: #1e293b;
+                color: white;
+                font-weight: 600;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f3f4f6;
+            }
+
+            .actions {
+                display: flex;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                color: white;
+                text-decoration: none;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .btn-edit {
+                background-color: #2563eb;
+            }
+
+            .btn-edit:hover {
+                background-color: #1d4ed8;
+            }
+
+            .btn-delete {
+                background-color: #ef4444;
+            }
+
+            .btn-delete:hover {
+                background-color: #b91c1c;
+            }
+
+            .btn-back {
+                margin-top: 20px;
+                display: inline-block;
+                background-color: #6b7280;
+                color: white;
+                padding: 10px 16px;
+                border-radius: 6px;
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+            .btn-back:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: 60px;
+                margin-bottom: 20px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="supervisor-badge">SUPERVISOR</span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo: <strong>SUPERVISOR</strong>
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+            <h2>Lista de Operarios</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Turno</th>
+                        <th>Estado</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="operario : ${operarios}">
+                        <td th:text="${operario.id}"></td>
+                        <td th:text="${operario.nombre}"></td>
+                        <td th:text="${operario.apellido}"></td>
+                        <td th:text="${operario.telefono}"></td>
+                        <td th:text="${operario.correo}"></td>
+                        <td th:text="${operario.turno}"></td>
+                        <td th:text="${operario.estado}"></td>
+                        <td th:text="${operario.fechaIngreso}"></td>
+                        <td class="actions">
+                            <a th:href="@{'/supervisor/operarios/info/editar/' + ${operario.id}}" class="btn btn-edit">Editar</a>
+                            <a th:href="@{'/supervisor/operarios/info/eliminar/' + ${operario.id}}" class="btn btn-delete"
+                               onclick="return confirm('¿Estás seguro de eliminar este operario?');">Eliminar</a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(operarios)}">
+                        <td colspan="9" style="text-align:left;">No hay informacion de operarios todavía</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a th:href="@{/supervisor}" class="btn-back">Regresar</a>
+        </div>
+
+        <footer>
+            ProWork Analytics © 2026 | Módulo Supervisor
+        </footer>
+
+    </body>
+</html>

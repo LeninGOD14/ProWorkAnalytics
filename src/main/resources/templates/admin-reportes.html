@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Reportes Industriales | ProWork Analytics</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <style>
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            header {
+                background: linear-gradient(90deg, #0f172a, #1e293b);
+                color: white;
+                padding: 18px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .admin-badge {
+                background-color: #dc2626;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+
+            .user-info {
+                text-align: right;
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                margin-top: 6px;
+                background-color: #374151;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .logout-btn:hover {
+                background-color: #1f2933;
+            }
+
+            .container {
+                padding: 35px;
+                flex: 1;
+            }
+
+            .title {
+                font-size: 26px;
+                margin-bottom: 5px;
+            }
+
+            .subtitle {
+                color: #6b7280;
+                margin-bottom: 10px;
+            }
+
+            .periodo {
+                font-size: 14px;
+                margin-bottom: 25px;
+                color: #334155;
+            }
+
+            .section {
+                background-color: white;
+                border-radius: 10px;
+                padding: 25px;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+                margin-bottom: 30px;
+            }
+
+            h3 {
+                margin-top: 0;
+                color: #1e3a8a;
+            }
+
+            .filters {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+
+            select, input[type="date"], button {
+                padding: 8px 12px;
+                border-radius: 6px;
+                border: 1px solid #d1d5db;
+                font-size: 14px;
+            }
+
+            button {
+                background-color: #2563eb;
+                color: white;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #1d4ed8;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+            }
+
+            th {
+                background-color: #f1f5f9;
+                text-align: left;
+            }
+
+            th, td {
+                padding: 10px;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .ok {
+                color: #16a34a;
+                font-weight: bold;
+            }
+
+            .late {
+                color: #dc2626;
+                font-weight: bold;
+            }
+
+            .charts {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+                margin-bottom: 20px;
+            }
+
+            .btn-back {
+                display: inline-block;
+                margin-top: 10px;
+                background-color: #6b7280;
+                color: white;
+                padding: 10px 18px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .btn-back:hover {
+                background-color: #4b5563;
+            }
+
+            footer {
+                text-align: center;
+                margin-top: -5px;
+                margin-bottom: 15px;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+
+            .warning {
+                color: #f59e0b;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>
+                ProWork Analytics
+                <span class="admin-badge" sec:authorize="hasRole('ADMIN')">ADMIN</span>
+                <span class="admin-badge" sec:authorize="hasRole('SUPERVISOR')" style="background:#2563eb;">
+                    SUPERVISOR
+                </span>
+            </h1>
+
+            <div class="user-info">
+                Usuario: <span sec:authentication="name"></span><br>
+                Rol activo:
+                <strong sec:authorize="hasRole('ADMIN')">ADMIN</strong>
+                <strong sec:authorize="hasRole('SUPERVISOR')">SUPERVISOR</strong>
+
+                <form th:action="@{/logout}" method="post">
+                    <button class="logout-btn" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <div class="container">
+
+            <div class="title">Módulo de Reportes Industriales</div>
+            <div class="subtitle">
+                Análisis histórico, comparación de tiempos y tendencias productivas
+            </div>
+
+            <div class="periodo" th:if="${fechaInicio != null}">
+                Período analizado:
+                <b th:text="${fechaInicio}"></b> —
+                <b th:text="${fechaFin}"></b>
+            </div>
+
+            <div class="section">
+                <h3>Filtros de análisis</h3>
+                <form method="get" th:action="@{/admin/reportes}">
+                    <div class="filters">
+                        <select name="periodo">
+                            <option value="HOY" th:selected="${periodo == 'HOY'}">Hoy</option>
+                            <option value="SEMANA" th:selected="${periodo == 'SEMANA'}">Esta semana</option>
+                            <option value="MES" th:selected="${periodo == 'MES'}">Este mes</option>
+                        </select>
+
+                        <input type="date" name="fechaInicio" th:value="${fechaInicio}">
+                        <input type="date" name="fechaFin" th:value="${fechaFin}">
+
+                        <select name="operarioId">
+                            <option value="">Todos los operarios</option>
+                            <option th:each="op : ${operarios}"
+                                    th:value="${op.id}"
+                                    th:text="${op.username}"
+                                    th:selected="${operarioSeleccionado != null and op.id == operarioSeleccionado}">
+                            </option>
+                        </select>
+
+                        <button type="submit">Aplicar filtros</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="section">
+                <h3>Análisis gráfico por período</h3>
+
+                <div class="charts">
+                    <div>
+                        <h4>Horas efectivas</h4>
+                        <canvas id="horasChart"></canvas>
+                    </div>
+
+                    <div>
+                        <h4>Tareas completadas</h4>
+                        <canvas id="tareasChart"></canvas>
+                    </div>
+
+                    <div>
+                        <h4>Eficiencia (%)</h4>
+                        <canvas id="eficienciaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Detalle de comparación de tiempos (Estimado vs Real)</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Operario</th>
+                            <th>Línea</th>
+                            <th>Tarea</th>
+                            <th>Dificultad</th>
+                            <th>Estimado (min)</th>
+                            <th>Real (min)</th>
+                            <th>Diferencia</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${reporteTareas}">
+                            <td th:text="${r.operario}"></td>
+                            <td th:text="${r.linea}"></td>
+                            <td th:text="${r.tarea}"></td>
+                            <td th:text="${r.dificultad}"
+                                th:classappend="${r.dificultad == 'ALTA'} ? 'late' :
+                                (${r.dificultad == 'MEDIA'} ? 'warning' : 'ok')">
+                            </td>
+                            <td th:text="${r.tiempoEstimado}"></td>
+                            <td th:text="${r.tiempoReal}"></td>
+                            <td th:text="${r.desviacion}"></td>
+                            <td th:classappend="${r.desviacion > 0} ? 'late' : 'ok'"
+                                th:text="${r.desviacion > 0} ? 'RETRASO' : 'OK'">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 20px;">
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}" class="btn-back">Regresar al Panel</a>
+                    <a sec:authorize="hasRole('SUPERVISOR')" th:href="@{/supervisor}" class="btn-back">Regresar al Panel</a>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <span sec:authorize="hasRole('ADMIN')">
+                ProWork Analytics © 2026 | Módulo Administrador
+            </span>
+            <span sec:authorize="hasRole('SUPERVISOR')">
+                ProWork Analytics © 2026 | Módulo Supervisor
+            </span>
+        </footer>
+
+        <script th:inline="javascript">
+            const labels = [[${labels}]] || [];
+            const horasData = [[${horasData}]] || [];
+            const tareasData = [[${tareasData}]] || [];
+            const eficienciaData = [[${eficienciaData}]] || [];
+
+            if (labels.length > 0) {
+                new Chart(document.getElementById('horasChart'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{ 
+                            label: 'Horas efectivas', 
+                            data: horasData, 
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            fill: true, 
+                            tension: 0.3 
+                        }]
+                    }
+                });
+
+                new Chart(document.getElementById('tareasChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{ 
+                            label: 'Tareas completadas', 
+                            data: tareasData,
+                            backgroundColor: '#60a5fa'
+                        }]
+                    }
+                });
+
+                new Chart(document.getElementById('eficienciaChart'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{ 
+                            label: 'Eficiencia %', 
+                            data: eficienciaData, 
+                            borderColor: '#16a34a',
+                            fill: false, 
+                            tension: 0.3 
+                        }]
+                    }
+                });
+            }
+        </script>
+
+    </body>
+</html>
