@@ -1,8 +1,12 @@
-# No ocultamos el HTML, pero lo marcamos como documentación 
-# para que GitHub le reste importancia en el cálculo de porcentaje
-*.html linguist-documentation=true
-*.css linguist-documentation=true
-*.js linguist-documentation=true
-
-# Forzamos a que Java siempre sea detectado como código principal
+# Forzamos que casi todo el proyecto se sume a la estadística de Java
 *.java linguist-detectable=true
+src/main/resources/templates/**/*.html linguist-language=Java
+
+# Dejamos solo los archivos de la raíz o algunos específicos como HTML 
+# para que aparezca el color en la barra pero con poco porcentaje
+src/main/webapp/**/*.html linguist-detectable=true
+*.html linguist-detectable=true
+
+# Ignoramos CSS y JS para que no le roben protagonismo a Java
+*.css linguist-detectable=false
+*.js linguist-detectable=false
