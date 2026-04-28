@@ -1,2 +1,11 @@
-/mvnw text eol=lf
-*.cmd text eol=crlf
+# Marcar carpetas de frontend para que no cuenten en las estadísticas
+src/main/resources/templates/**/* linguist-detectable=false
+src/main/resources/static/**/* linguist-detectable=false
+
+# Opcional: Forzar que los archivos .html se traten como si no fueran el lenguaje principal
+*.html linguist-documentation=true
+*.css linguist-documentation=true
+*.js linguist-documentation=true
+
+# Asegurar que Java sea el protagonista
+*.java linguist-detectable=true
