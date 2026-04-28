@@ -1,11 +1,8 @@
-# Marcar carpetas de frontend para que no cuenten en las estadísticas
-src/main/resources/templates/**/* linguist-detectable=false
-src/main/resources/static/**/* linguist-detectable=false
-
-# Opcional: Forzar que los archivos .html se traten como si no fueran el lenguaje principal
+# No ocultamos el HTML, pero lo marcamos como documentación 
+# para que GitHub le reste importancia en el cálculo de porcentaje
 *.html linguist-documentation=true
 *.css linguist-documentation=true
 *.js linguist-documentation=true
 
-# Asegurar que Java sea el protagonista
+# Forzamos a que Java siempre sea detectado como código principal
 *.java linguist-detectable=true
